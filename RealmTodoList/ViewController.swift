@@ -215,7 +215,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
         if section == 0{
             return "OPEN TASK"
         }
-        return "COMPLETED"
+        return "COMPLETED Task"
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
