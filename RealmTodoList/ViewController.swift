@@ -243,7 +243,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
                 self.readTasksAndUpateUI()
             }
         }
-        let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Edit") { (editAction, indexPath) -> Void in
+        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { (editAction, indexPath) -> Void in
             
             var taskToBeUpdated: Todo!
             if indexPath.section == 0{
@@ -257,7 +257,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
             
         }
         
-        let doneAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Done") { (doneAction, indexPath) -> Void in
+        let doneAction = UITableViewRowAction(style: .normal, title: "Done") { (doneAction, indexPath) -> Void in
             
             var taskToBeUpdated: Todo!
             if indexPath.section == 0{
