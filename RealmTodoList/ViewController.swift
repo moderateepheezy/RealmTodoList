@@ -9,29 +9,6 @@
 import UIKit
 import RealmSwift
 
-
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l < r
-    case (nil, _?):
-        return true
-    default:
-        return false
-    }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l > r
-    default:
-        return rhs < lhs
-    }
-}
-
 class ViewController: UIViewController {
     
     var searchBar: UISearchBar!
@@ -53,7 +30,7 @@ class ViewController: UIViewController {
     
     var currentCreateAction:UIAlertAction!
     
-    var isEditingMode = false
+    var isEditable = false
     
     var segmentedControl: UISegmentedControl!
 
@@ -105,19 +82,16 @@ class ViewController: UIViewController {
     }
     
     func showAlertView(todo: Todo!){
-        var title = "Add a new todo"
-        var doneTitle = "Add Task"
-        if todo != nil{
-            title = "Update Todo"
-            doneTitle = "Update Task"
-        }
+        
+        let title = (todo != nil) ? "Update Todo" : "Add a new todo"
+        let actionTitle = (todo != nil) ? "Update Task" : "Add Task"
         
         let alertController = UIAlertController(title: title, message: "What task are you doing buddy", preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
             
         }
-        let addAction = UIAlertAction(title: doneTitle, style: .default) { (action) in
+        let addAction = UIAlertAction(title: actionTitle, style: .default) { (action) in
             guard let firstTextField = alertController.textFields?.first else {return}
             let _textField = firstTextField as UITextField
             guard let text = _textField.text else {return}
@@ -182,8 +156,8 @@ class ViewController: UIViewController {
     }
     
     func handlEditTodo(sender: UIBarButtonItem){
-        isEditingMode = !isEditingMode
-        self.tableView.setEditing(isEditingMode, animated: true)
+        isEditable = !isEditable
+        self.tableView.setEditing(isEditable, animated: true)
     }
     
     func readTasksAndUpateUI(){
@@ -215,7 +189,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
         if section == 0{
             return "OPEN TASK"
         }
-        return "COMPLETED Task"
+        return "COMPLETED TASK"
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
@@ -253,8 +227,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { (deleteAction, indexPath) -> Void in
             
-            //Deletion will go here
-            
             var taskToBeDeleted: Todo!
             if indexPath.section == 0{
                 taskToBeDeleted = self.openTasks[indexPath.row]
@@ -270,7 +242,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
         }
         let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Edit") { (editAction, indexPath) -> Void in
             
-            // Editing will go here
             var taskToBeUpdated: Todo!
             if indexPath.section == 0{
                 taskToBeUpdated = self.openTasks[indexPath.row]
@@ -284,7 +255,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
         }
         
         let doneAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Done") { (doneAction, indexPath) -> Void in
-            // Editing will go here
+            
             var taskToBeUpdated: Todo!
             if indexPath.section == 0{
                 taskToBeUpdated = self.openTasks[indexPath.row]
