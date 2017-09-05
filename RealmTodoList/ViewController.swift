@@ -95,6 +95,10 @@ class ViewController: UIViewController {
             guard let firstTextField = alertController.textFields?.first else {return}
             let _textField = firstTextField as UITextField
             guard let text = _textField.text else {return}
+            
+            if text.characters.count == 0{
+                return
+            }
             let taskName = text
             
             if todo != nil{
@@ -161,7 +165,6 @@ class ViewController: UIViewController {
     }
     
     func readTasksAndUpateUI(){
-        //updateUIView()
         completedTasks = self.todos.filter("isCompleted = true")
         openTasks = self.todos.filter("isCompleted = false")
         
