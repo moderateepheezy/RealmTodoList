@@ -219,7 +219,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         var todo: Todo!
         if indexPath.section == 0{
             todo = openTasks[indexPath.row]
@@ -228,9 +228,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
             todo = completedTasks[indexPath.row]
         }
         
-        cell?.textLabel?.text = todo.task
-        cell?.detailTextLabel?.text = todo.createdAt.description
-        return cell!
+        cell.textLabel?.text = todo.task
+        cell.detailTextLabel?.text = todo.createdAt.description
+        return cell
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
